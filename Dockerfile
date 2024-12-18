@@ -1,4 +1,4 @@
-FROM node:18 as base
+FROM node:22 AS base
 
 WORKDIR /usr/app
 
@@ -7,7 +7,7 @@ RUN npm ci
 
 COPY . .
 
-FROM base as production
+FROM base AS production
 
 RUN npm run build
 

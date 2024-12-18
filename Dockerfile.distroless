@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:22-alpine AS builder
 
 WORKDIR /usr/app
 
@@ -7,11 +7,11 @@ RUN npm ci
 
 COPY . .
 
-FROM builder as compiler
+FROM builder AS compiler
 
 RUN npm run build
 
-FROM node:18-alpine as production
+FROM node:22-alpine AS production
 
 WORKDIR /usr/app
 COPY --from=compiler /usr/app/package*.json ./
@@ -19,7 +19,7 @@ COPY --from=compiler /usr/app/build ./
 
 RUN npm ci --only=production
 
-FROM gcr.io/distroless/nodejs18-debian11
+FROM gcr.io/distroless/nodejs22-debian12
 WORKDIR /usr/app
 COPY --from=production /usr/app ./
 
